@@ -29,7 +29,7 @@ services:
     cpu_shares: 1000
     depends_on:
       - repository
-      - activemq
+      # - activemq
 
 ##### JasperReportServer repository, import and export configuration
   jasperserver-buildomatic:
@@ -50,21 +50,20 @@ services:
 
  ##### JasperReportServer Repository
   repository:
-    image: postgres:12
+    image: mysql:5.7
     ports:
-      - 5432:5432
+      - 3306:3306
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - MYSQL_ROOT_PASSWORD=localDev
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-  activemq:
-    image: rangareddyv/activemq-openshift:5.16.2
-    ports:
-      - 8161:8161
-      - 61616:61616
+      - mysql-data:/var/lib/mysql
+  # We don't use ActiveMQ based session storage
+  # activemq:
+  #   image: rangareddyv/activemq-openshift:5.16.2
+  #   ports:
+  #     - 8161:8161
+  #     - 61616:61616
 
 volumes:
-  postgres-data:
+  mysql-data:
     name: jrs-repository-vol

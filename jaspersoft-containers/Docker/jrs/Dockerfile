@@ -79,7 +79,10 @@ USER 10099
 WORKDIR $CATALINA_HOME
 COPY --from=deployment --chown=jasperserver:root /usr/local/tomcat .
 COPY --chown=jasperserver:root ${CONTAINER_DISTRO}/resources/jasperserver-customization .
-COPY --chown=jasperserver:root ${CONTAINER_DISTRO}/cluster-config/WEB-INF  $CATALINA_HOME/webapps/jasperserver-pro/WEB-INF/
+# Include eval license by default to allow testing image build at a basic level
+COPY --chown=jasperserver:root ${JRS_DISTRO}/jasperreports-server-pro-8.1.0-bin/eval-licenses/jasperreports-server-professional_jasperserver.license /usr/local/share/jasperserver-pro/license/jasperserver.license
+# This defaults to using ActiveMQ for session management, which is not what we want.
+# COPY --chown=jasperserver:root ${CONTAINER_DISTRO}/cluster-config/WEB-INF  $CATALINA_HOME/webapps/jasperserver-pro/WEB-INF/
 
 
 EXPOSE 8080 8443
